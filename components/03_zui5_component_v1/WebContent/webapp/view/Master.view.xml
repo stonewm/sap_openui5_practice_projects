@@ -1,0 +1,38 @@
+<core:View xmlns:core="sap.ui.core" 
+           xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+		controllerName="webapp.controller.Master" 
+		xmlns:html="http://www.w3.org/1999/xhtml">
+		
+	<Page title="供应商概览">
+		<content>
+			<Table items="{/Suppliers}">
+			
+				<headerToolbar>
+					<Toolbar>
+						<Label text="供应商数量: {/CountOfSuppliers}" />
+					</Toolbar>
+				</headerToolbar>
+				
+				<columns>
+					<Column>
+						<header><Text text="ID" /> </header>
+					</Column>
+					<Column>
+						<header><Text text="供应商名称" /> </header>
+					</Column>
+				</columns>
+				
+				<items>
+					<ColumnListItem type="Navigation" press="onListPress">
+						<cells>
+							<ObjectIdentifier text="{ID}" />
+							<ObjectIdentifier text="{Name}" />
+						</cells>
+					</ColumnListItem>
+				</items>
+				
+			</Table>
+		</content>
+	</Page>
+	
+</core:View>
