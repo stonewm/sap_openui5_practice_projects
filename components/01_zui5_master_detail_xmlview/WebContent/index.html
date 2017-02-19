@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+
+		<script src="resources/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.m"
+				data-sap-ui-xx-bindingSyntax="complex"
+				data-sap-ui-resourceroots='{"webapp": "./webapp/"}'
+				data-sap-ui-theme="sap_bluecrystal">
+		</script>		
+
+		<script>
+			// application data
+			var oModel = new sap.ui.model.json.JSONModel();
+			oModel.loadData("webapp/model/data.json");
+			sap.ui.getCore().setModel(oModel);
+			
+			var oApp = new sap.m.App({
+				initialPage: "masterView"
+			});
+			
+			var oMasterView = sap.ui.xmlview({
+				id: "masterView",
+				viewName: "webapp.view.Master"
+			});	
+			
+			var oDetailView = sap.ui.xmlview({
+				id: "detailView",
+				viewName: "webapp.view.Detail"
+			});
+			
+			oApp.addPage(oMasterView);
+			oApp.addPage(oDetailView);
+			oApp.placeAt("content");
+			
+		</script>
+
+	</head>
+	<body class="sapUiBody" role="application">
+		<div id="content" class="sapUiResponsiveMargin"></div>
+	</body>
+</html>
