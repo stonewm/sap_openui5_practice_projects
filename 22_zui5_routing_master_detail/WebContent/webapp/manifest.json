@@ -1,0 +1,98 @@
+{
+	"_version": "1.1.0",
+	"sap.app": {
+		"_version": "1.1.0",
+		"id": "stone.sapui5.test",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"dataSources": {
+			"mainService": {
+				"uri": "./service/data.json",
+				"type": "JSON"
+			}
+		}
+	},
+	
+	"sap.ui": {
+		"_version": "1.1.0",
+		"technology": "UI5",
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		},
+		"supportedThemes": [
+			"sap_bluecrystal"
+		]
+	},
+	
+	"sap.ui5": {
+		"_version": "1.1.0",
+		"rootView": {
+			"viewName": "webapp.view.App",
+			"type": "XML"
+		},
+		"dependencies": {
+			"minUI5Version": "1.30.0",
+			"libs": {
+				"sap.m": {}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"": {
+				"dataSource": "mainService"
+			 },
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "webapp.i18n.i18n"
+				}
+			}
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"viewPath": "webapp.view",
+				"controlId": "app",
+				"controlAggregation": "pages",
+				"bypassed": {
+					"target": "notFound"
+				}
+			},
+			"routes": [{
+				"pattern": "",
+				"name": "master",
+				"target": "master"
+			},
+			{
+				"pattern": "detail/{supplierPath}",
+				"name": "detail",
+				"target": "detail"
+			}],
+			"targets": {
+				"master": {
+					"viewName": "Master",
+					"viewLevel": 1
+				},
+				"detail": {
+					"viewName": "Detail",
+					"viewLevel": 2
+				},
+				"notFound": {
+					"viewName": "NotFound",
+					"viewId": "notFound"
+				}
+			}
+		}
+	}
+}
