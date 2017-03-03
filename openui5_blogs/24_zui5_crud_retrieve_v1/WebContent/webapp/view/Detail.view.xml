@@ -1,0 +1,18 @@
+<core:View xmlns:core="sap.ui.core" 
+		   xmlns:mvc="sap.ui.core.mvc" 
+		   xmlns="sap.m"
+			controllerName="stonewang.sapui5.demo.controller.Detail" 
+			xmlns:html="http://www.w3.org/1999/xhtml">
+			
+	<Page id="page" showNavButton="true" navButtonPress="onNavPress"
+		  title="{i18n>detailTitle}">
+		  
+		<content>
+		  	<ObjectHeader title="{Name}" number="ID: {id}">
+				<ObjectAttribute text="{Address/Street}, {Address/City}"/>
+			</ObjectHeader>
+		</content>
+	
+	</Page>
+
+</core:View>

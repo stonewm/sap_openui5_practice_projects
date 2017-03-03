@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>		
+		
+		<script src="../service/FakeRest.min.js"></script>
+
+		<script src="../../resources/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.m"
+				data-sap-ui-preload="async"
+				data-sap-ui-theme="sap_bluecrystal"
+				data-sap-ui-xx-bindingSyntax="complex"	
+				data-sap-ui-resourceroots='{"stonewang.sapui5.demo": "../"}'>
+		</script>		
+
+		<script>
+		
+			jQuery.sap.require("sap.ui.thirdparty.sinon");
+			
+			var data = {
+			    'authors': [
+			        { id: 0, first_name: 'Leo', last_name: 'Tolstoi' },
+			        { id: 1, first_name: 'Jane', last_name: 'Austen' }
+			    ],
+			    'books': [
+			        { id: 0, author_id: 0, title: 'Anna Karenina' },
+			        { id: 1, author_id: 0, title: 'War and Peace' },
+			        { id: 2, author_id: 1, title: 'Pride and Prejudice' },
+			        { id: 3, author_id: 1, title: 'Sense and Sensibility' }
+			    ],
+			    'settings': {
+			        language: 'english',
+			        preferred_format: 'hardback',
+			    }
+			};
+				
+			// initialize fake REST server
+			var restServer = new FakeRest.Server();
+			restServer.init(data);
+	
+			// use sinon.js to monkey-patch XmlHttpRequest
+			var server = sinon.fakeServer.create();
+			server.respondWith(restServer.getHandler());
+			
+			// 使用GET请求查询所有的author
+			var req = new XMLHttpRequest();
+			req.open("GET", "/authors", false);
+			req.send(null);
+			console.log(req.responseText);
+			
+			// 使用GET请求查询第四条book:/books/3
+			req = new XMLHttpRequest();
+			req.open("GET", "/books/3", false);
+			req.send(null);
+			console.log(req.responseText);
+			
+			// 使用POST请求插入数据
+			req = new XMLHttpRequest();
+			req.open("POST", "/books", false);
+			var updateData = JSON.stringify({
+				id: 4, author_id:1, title:'Emma'});
+			req.send(updateData);
+			console.log(req.responseText);
+			
+			// 使用PUT请求更改数据
+			req = new XMLHttpRequest();
+			req.open("PUT", "/books/2", false);
+			var modifyData = JSON.stringify({
+				title:'傲慢与偏见'});
+			req.send(modifyData);
+			console.log("修改：");
+			console.log(req.responseText);
+			
+			// 使用GET请求查询所有的books
+			req = new XMLHttpRequest();
+			req.open("GET", "/books", false);
+			req.send(null);
+			console.log("修改后：");
+			console.log(req.responseText);
+			
+			// Delete数据
+			req = new XMLHttpRequest();
+			req.open("DELETE", "/books/4", false);
+			req.send(null);
+			console.log("删除：");
+			console.log(req.responseText);
+			
+			// 使用GET请求查询所有的books
+			req = new XMLHttpRequest();
+			req.open("GET", "/books", false);
+			req.send(null);
+			console.log("删除后：");
+			console.log(req.responseText);
+			
+		</script>
+
+	</head>
+	<body class="sapUiBody" role="application">
+		<div id="content"></div>
+	</body>
+</html>

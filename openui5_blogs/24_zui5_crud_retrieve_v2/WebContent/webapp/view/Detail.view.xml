@@ -1,0 +1,30 @@
+<core:View xmlns:core="sap.ui.core" 
+		   xmlns:mvc="sap.ui.core.mvc" 
+		   xmlns="sap.m"
+			controllerName="stonewang.sapui5.demo.controller.Detail" 
+			xmlns:html="http://www.w3.org/1999/xhtml">
+			
+	<Page id="page" showNavButton="true" navButtonPress="onNavPress"
+		  title="{i18n>detailTitle}">
+		  
+		<subHeader>
+			<Toolbar>
+				<ToolbarSpacer />
+				<Button icon="sap-icon://slim-arrow-up" 
+          			    press="onPageUp" 
+          			    enabled="{viewModel>/buttonPrev}" />
+          		<Button icon="sap-icon://slim-arrow-down" 
+          			    press="onPageDown" 
+          			    enabled="{viewModel>/buttonNext}" />
+			</Toolbar>		
+		</subHeader>
+			
+		<content>
+		  	<ObjectHeader title="{Name}" number="ID: {id}">
+				<ObjectAttribute text="{Address/Street}, {Address/City}"/>
+			</ObjectHeader>
+		</content>
+	
+	</Page>
+
+</core:View>
