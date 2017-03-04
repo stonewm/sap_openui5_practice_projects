@@ -11,11 +11,11 @@
 			<Toolbar>
 				<ToolbarSpacer />
 				<Button icon="sap-icon://slim-arrow-up" 
-		        			    press="onPageUp" 
-		        			    enabled="{viewModel>/canGoPrev}" />
-		        		<Button icon="sap-icon://slim-arrow-down" 
-		        			    press="onPageDown" 
-		        			    enabled="{viewModel>/canGoNext}" />
+								press="onPageUp" 
+								enabled="{viewModel>/canGoPrev}" />
+				<Button icon="sap-icon://slim-arrow-down" 
+								press="onPageDown" 
+								enabled="{viewModel>/canGoNext}" />
 			</Toolbar>		
 		</subHeader>
 			
