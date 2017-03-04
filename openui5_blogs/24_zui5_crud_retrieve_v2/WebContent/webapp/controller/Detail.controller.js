@@ -17,8 +17,8 @@ sap.ui.define([
 				
 				// 创建一个model view, 包含两个button是否enabled的布尔值
 				var oViewModel = new sap.ui.model.json.JSONModel({
-					buttonPrev: false,
-					buttonNext: false
+					canGoPrev: false,
+					canGoNext: false
 				});
 				
 				this.getView().setModel(oViewModel, "viewModel");
@@ -30,21 +30,20 @@ sap.ui.define([
 				oRouter.navTo("master",{}, true);
 			},
 			
-			onPageUp: function(oEvent){
-				var sPath = oEvent.getSource().getBindingContext().getPath();
-				var sId = parseInt(sPath.substr(sPath.lastIndexOf("/")+1));
+			onPageUp: function(oEvent){				
+				var sId = parseInt(this.sObjectID);
 				sId = sId - 1;
+				
 				var oRouter = UIComponent.getRouterFor(this);
 				var sNewRoute = encodeURIComponent("/"+sId);
 				oRouter.navTo("detail", {supplierPath: sNewRoute});
 			},
 			
 			onPageDown: function(oEvent){
-				var sPath = oEvent.getSource().getBindingContext().getPath();
-				var sId = parseInt(sPath.substr(sPath.lastIndexOf("/")+1));
+				var sId = parseInt(this.sObjectID);
 				sId = sId + 1;
-				var oRouter = UIComponent.getRouterFor(this);				
 				
+				var oRouter = UIComponent.getRouterFor(this);				
 				var sNewRoute = encodeURIComponent("/"+sId);
 				oRouter.navTo("detail", {supplierPath: sNewRoute});
 			},
@@ -54,7 +53,7 @@ sap.ui.define([
 				var sPath 
 					= decodeURIComponent(oEvent.getParameter("arguments").supplierPath);
 				this.getView().bindElement({path: sPath});				
-
+			
 				this.sObjectID = sPath.substr(sPath.lastIndexOf("/")+1);
 				this._updateViewModel();
 			},
@@ -66,14 +65,14 @@ sap.ui.define([
 				
 				var nextObjId = parseInt(that.sObjectID) + 1;
 				var prevObjId = parseInt(that.sObjectID) - 1;					
-
+			
 				var bNextEnable = !!oModel.getProperty("/" + nextObjId);
 				var bPrevEnable = !!oModel.getProperty("/" + prevObjId);
 				
-				oViewModel.setProperty("/buttonNext", bNextEnable);
-				oViewModel.setProperty("/buttonPrev", bPrevEnable);
-			}
-	     });
+				oViewModel.setProperty("/canGoNext", bNextEnable);
+				oViewModel.setProperty("/canGoPrev", bPrevEnable);
+				}
+			 });
 	
 	}
 );
