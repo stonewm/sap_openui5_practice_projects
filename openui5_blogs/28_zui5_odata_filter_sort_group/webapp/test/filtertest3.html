@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+
+		<script src="../../resources/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.m"
+				data-sap-ui-theme="sap_bluecrystal">
+		</script>
+		
+		<script>
+		
+			// application model
+			var sServiceUrl = "https://cors-anywhere.herokuapp.com/" 
+			                + "http://services.odata.org/V3/Northwind/Northwind.svc/";
+			var oModel = new sap.ui.model.odata.v2.ODataModel(sServiceUrl);
+			oModel.setUseBatch(false);
+			sap.ui.getCore().setModel(oModel);
+			
+			// 按选择条件执行筛选
+			onFilterProducts = function(oEvent){
+				var sQueryVal = oEvent.getParameter("query");				
+				var aFilters = [];
+				
+				if (sQueryVal){
+					var oProductFilter = new sap.ui.model.Filter(
+							"ProductName",
+							sap.ui.model.FilterOperator.Contains,
+							sQueryVal);
+					aFilters.push(oProductFilter);
+				}
+				
+				var oList = sap.ui.getCore().byId("ProductList");
+				var oBinding = oList.getBinding("items");
+
+				oBinding.filter(aFilters);
+			}			
+			
+			sap.ui.getCore().attachInit(function(){
+				var oList = new sap.m.List({
+					id: "ProductList",
+					width: "auto"
+				});
+				
+				oList.setHeaderToolbar(new sap.m.Toolbar({
+					title: "库存产品清单",
+					content: [
+					   new sap.m.ToolbarSpacer(),
+					   new sap.m.SearchField({width: "50%", search: onFilterProducts})
+					]
+				}));
+				
+				oList.bindItems({
+					path: "/Products",	
+					template: new sap.m.ObjectListItem({
+						title: "{ProductName}",
+						number: "{UnitPrice}",
+						numberUnit: "EUR"
+					})
+				});
+				
+				var oPage = new sap.m.Page({
+					title: "oDataModel 筛选测试",
+					content: [oList]
+				});
+				
+				var oApp = new sap.m.App({
+					initialPage: oPage
+				});
+				
+				oApp.addPage(oPage);
+				oApp.placeAt("content");		
+			});			
+			
+		</script>
+
+	</head>
+	<body class="sapUiBody" role="application">
+		<div id="content"></div>
+	</body>
+</html>

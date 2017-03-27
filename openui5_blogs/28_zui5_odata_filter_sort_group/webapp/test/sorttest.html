@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+
+		<script src="../../resources/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.m"
+				data-sap-ui-theme="sap_bluecrystal">
+		</script>
+
+		<script>
+		
+			// Application model
+			var sServiceUrl = "https://cors-anywhere.herokuapp.com/" 
+			                + "http://services.odata.org/V3/Northwind/Northwind.svc/";
+			var oModel = new sap.ui.model.odata.v2.ODataModel(sServiceUrl);
+			oModel.setUseBatch(false);
+			sap.ui.getCore().setModel(oModel);
+			
+			// 定义两个 Sorter 对象，第二个参数表示是否 Descending
+			var oIDSorter = new sap.ui.model.Sorter("SupplierID", false);
+			var oNameSorter = new sap.ui.model.Sorter("CompanyName", false);
+			
+			// 按 SupplierID 排序
+			var onSortByID = function(oEvent){
+				oIDSorter.bDescending = !oIDSorter.bDescending;
+				
+				var oTable = sap.ui.getCore().byId("suppliersTable");
+ 				var oListBinding = oTable.getBinding("items"); 				
+ 				oListBinding.sort(oIDSorter);	 
+			};
+			
+			// 按 CompanyName 排序
+			var onSortByName = function(oEvent){
+				oNameSorter.bDescending = !oNameSorter.bDescending;
+				
+				var oTable = sap.ui.getCore().byId("suppliersTable");
+ 				var oListBinding = oTable.getBinding("items"); 				
+ 				oListBinding.sort(oNameSorter); 	
+			};		
+			
+			sap.ui.getCore().attachInit(function(){		
+				
+				var oTable = new sap.m.Table("suppliersTable", {
+					width: "auto",
+					noDataText: "Loading...",					
+					
+					// header toolbar
+					headerToolbar: new sap.m.Toolbar({
+						content: [
+							new sap.m.Title({text: "供应商清单"}),
+							new sap.m.ToolbarSpacer()
+						]
+					}),
+					
+					// columns
+					columns: [
+						new sap.m.Column({
+							header: new sap.m.Toolbar({
+								content: [
+								    new sap.m.Text({text: "供应商ID"}),
+								    new sap.m.Button({
+								    	icon: "sap-icon://sort",
+								    	press: onSortByID
+								    })
+								]
+							})
+						}),
+						new sap.m.Column({
+                			header: new sap.m.Toolbar({
+                				content: [
+    								new sap.m.Text({text: "供应商名称"}),
+    								new sap.m.Button({
+    								   icon: "sap-icon://sort",
+    								   press: onSortByName
+    								})
+    							]
+							})
+            			}),
+            			new sap.m.Column({
+                			header: new sap.m.Toolbar({ 
+                				content: [new sap.m.Text({text: "城市"})]
+                			})
+            			}), 
+            			new sap.m.Column({
+                			header: new sap.m.Toolbar({
+                				content: [new sap.m.Label({text: "国家"})]
+                			})
+            			}),
+					],
+					
+					// items
+					items: {
+						path: "/Suppliers",
+						sorter: oIDSorter,						
+						template: new sap.m.ColumnListItem({
+							cells: [
+							    new sap.m.Text({text: "{SupplierID}"}),
+								new sap.m.Text({text: "{CompanyName}"}),
+								new sap.m.Text({text: "{City}"}),
+								new sap.m.Text({text: "{Country}"})
+							]
+						})						
+					}
+				});			
+				
+				var oApp = new sap.m.App({
+					pages: [
+						new sap.m.Page({
+							title: "oDataModel 排序",
+							content: [oTable]
+						})  
+					]
+				});
+				
+				oApp.placeAt("content");
+			});			
+			
+		</script>
+
+	</head>
+	<body class="sapUiBody" role="application">
+		<div id="content"></div>
+	</body>
+</html>

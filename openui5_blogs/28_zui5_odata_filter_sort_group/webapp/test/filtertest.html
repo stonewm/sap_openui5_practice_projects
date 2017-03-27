@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+
+		<script src="../../resources/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.m"
+				data-sap-ui-theme="sap_bluecrystal">
+		</script>
+		<!-- only load the mobile lib "sap.m" and the "sap_bluecrystal" theme -->
+
+		<script>
+		
+			// application model
+			var sServiceUrl = "https://cors-anywhere.herokuapp.com/" 
+			                + "http://services.odata.org/V3/Northwind/Northwind.svc/";
+			var oModel = new sap.ui.model.odata.v2.ODataModel(sServiceUrl);
+			oModel.setUseBatch(false);
+			sap.ui.getCore().setModel(oModel);
+			
+			// define filters
+			var aFilters = [
+			    new sap.ui.model.Filter("ProductName", 
+			    		sap.ui.model.FilterOperator.Contains,
+			    		"Chocolate")
+			];
+			
+			// get data using filter
+			oModel.read("/Products", {
+				filters: aFilters,     
+				success: function(oData, oResponse){
+					console.log(oData);
+				}
+			});					
+			
+		</script>
+
+	</head>
+	<body class="sapUiBody" role="application">
+		<div id="content"></div>
+	</body>
+</html>
