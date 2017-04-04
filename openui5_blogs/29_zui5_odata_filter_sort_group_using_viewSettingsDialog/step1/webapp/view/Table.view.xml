@@ -1,0 +1,52 @@
+<core:View xmlns:core="sap.ui.core" 
+           xmlns:mvc="sap.ui.core.mvc" 
+           xmlns="sap.m"
+		controllerName="webapp.controller.Table" 
+		xmlns:html="http://www.w3.org/1999/xhtml">
+			
+	<Page title="排序，分组和筛选">
+		<content>
+			<Table items="{/Suppliers}" id="idTable" inset="true">
+				<headerToolbar>
+					<Toolbar>
+						<Title level="H2" text="供应商清单" />
+						<ToolbarSpacer />						
+						<Button press="onTableSettings" 
+						        icon="sap-icon://drop-down-list" />
+					</Toolbar>
+				</headerToolbar>
+				
+				<columns>
+					<Column id="SupplierID">
+						<Text text="供应商ID" />
+					</Column>
+					<Column id="CompanyName">
+						<Text text="供应商名称" />
+					</Column>
+					<Column id="Address">
+						<Text text="地址" />
+					</Column>
+					<Column id="City">
+						<Text text="城市" />
+					</Column>
+					<Column id="Country">
+						<Text text="国家" />
+					</Column>
+				</columns>
+				
+				<items>
+					<ColumnListItem >
+						<cells>
+							<ObjectIdentifier title="{SupplierID}" />
+							<Text text="{CompanyName}" />
+							<Text text="{Address}" />
+							<Text text="{City}" />
+							<Text text="{Country}" />
+						</cells>
+					</ColumnListItem>
+				</items>
+				
+			</Table>
+		</content>
+	</Page>	
+</core:View>

@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+
+		<script src="../resources/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.m"
+				data-sap-ui-xx-bindingSyntax="complex"
+				data-sap-ui-resourceroots='{"webapp": "./"}'
+				data-sap-ui-theme="sap_bluecrystal">
+		</script>
+
+		<script>
+			
+			var oApp = new sap.m.App({
+				pages: [sap.ui.xmlview("appView", "webapp.view.Table")]
+			});
+			oApp.placeAt("content");			
+			
+		</script>
+
+	</head>
+	<body class="sapUiBody" role="application">
+		<div id="content"></div>
+	</body>
+</html>
