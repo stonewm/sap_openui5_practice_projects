@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+
+		<script src="../resources/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.ui.commons, sap.ui.table"
+				data-sap-ui-theme="sap_bluecrystal">
+		</script>
+
+		<script>
+			jQuery.sap.require("sap.ui.core.util.MockServer");
+		
+	        // Create the ApplicationHeader control
+	        var oAppHeader = new sap.ui.commons.ApplicationHeader("appHeader"); 
+	        //oAppHeader.setLogoSrc("http://sap.github.io/openui5/images/icotxt_white_220x72_blue_open.png");
+	        oAppHeader.setDisplayWelcome(false);
+	        oAppHeader.setDisplayLogoff(false);
+	        oAppHeader.placeAt("content");
+	        
+            // Create mockserver
+            var oMockServer = new sap.ui.core.util.MockServer({
+                rootUri: "http://mymockserver/",
+            });			
+            oMockServer.simulate("model/metadata.xml", "model/");
+            oMockServer.start();
+            
+         	// Setting up model
+            var oModel = new sap.ui.model.odata.v2.ODataModel("http://mymockserver/", true);
+            sap.ui.getCore().setModel(oModel);
+            
+            // Setting up table
+            var oTable = new sap.ui.table.Table({
+                editable: false,
+                toolbar: new sap.ui.commons.Toolbar({ 
+                    items: [ 
+                        new sap.ui.commons.Button({
+                            text: "Create user", 
+                            press: function() {
+                                openCreateDialog();
+                            }, 
+                        }),
+                        new sap.ui.commons.Button({
+                            text: "Update user's data", 
+                            press: function() {
+                                var idx = oTable.getSelectedIndex();
+                                if (idx == -1) return;
+                                var rows = oTable.getRows();
+                                var user = rows[idx].getCells();
+                                openUpdateDialog(user);
+                            }, 
+                        }),
+                        new sap.ui.commons.Button({
+                            text: "Delete user", 
+                            press: function() {
+                                var idx = oTable.getSelectedIndex();
+                                if (idx == -1) return;
+                                var rows = oTable.getRows();
+                                var user = rows[idx].getCells();
+                                openDeleteDialog(user[0].getValue());
+                            }, 
+                        })
+                    ]
+                }),
+            });
+        
+            oTable.addColumn(new sap.ui.table.Column({
+                label: new sap.ui.commons.Label({text: "Email"}),
+                template: new sap.ui.commons.TextField().bindProperty("value", "Email"),
+                editable: false,
+                sortProperty: "Email"
+            }));
+        
+            oTable.addColumn(new sap.ui.table.Column({
+                label: new sap.ui.commons.Label({text: "Firstname"}),
+                template: new sap.ui.commons.TextField().bindProperty("value", "Firstname"),
+                sortProperty: "Firstname",
+                editable: false,
+            }));
+        
+            oTable.addColumn(new sap.ui.table.Column({
+                label: new sap.ui.commons.Label({text: "Lastname"}),
+                template: new sap.ui.commons.TextField().bindProperty("value", "Lastname"),
+                sortProperty: "Lastname",
+                editable: false,
+            }));
+        
+            oTable.addColumn(new sap.ui.table.Column({
+                label: new sap.ui.commons.Label({text: "Age"}),
+                template: new sap.ui.commons.TextField().bindProperty("value", "Age"),
+                sortProperty: "Age",
+                editable: false,
+            }));
+        
+            oTable.addColumn(new sap.ui.table.Column({
+                label: new sap.ui.commons.Label({text: "Address"}),
+                template: new sap.ui.commons.TextField().bindProperty("value", "Address"),
+                sortProperty: "Address",
+                editable: false,
+            }));
+            
+            
+            oTable.setModel(oModel);
+            oTable.bindRows("/Users");
+            oTable.placeAt("content");			
+		</script>
+
+	</head>
+	<body class="sapUiBody" role="application">
+		<div id="content"></div>
+	</body>
+</html>

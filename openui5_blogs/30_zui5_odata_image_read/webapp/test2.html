@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+
+		<script src="../resources/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.m, sap.ui.table, sap.ui.layout"
+				data-sap-ui-theme="sap_bluecrystal">
+		</script>
+
+		<script>
+			// Application data
+			var sUrl = "https://cors-anywhere.herokuapp.com/" + 
+			           "services.odata.org/V2/Northwind/Northwind.svc/";
+			var oModel = new sap.ui.model.odata.v2.ODataModel(sUrl)
+			sap.ui.getCore().setModel(oModel);
+			
+			sap.ui.getCore().attachInit(function(){
+				
+				var oImage = new sap.m.Image({
+					width: "200px",
+			    	src: {path: "Picture",
+			    		  formatter: function(sValue){
+			    			  var sBase64BMP = btoa(atob(sValue).substr(78));
+			    	             var sDataUrl = "data:image/bmp;base64," + sBase64BMP;
+			    	             return sDataUrl;
+			    		  }
+			    	}
+			    });
+				
+				var oForm = new sap.ui.layout.form.SimpleForm({
+			    	content: [
+			    	    new sap.m.Label({text: "Picuture"}),
+			    	    oImage,
+			    	    
+						new sap.m.Label({text: "Category ID"}),
+						new sap.m.Input({value: "{CategoryID}"}),
+						
+						new sap.m.Label({text: "Category Name"}),
+						new sap.m.Input({value: "{CategoryName}"}),
+						
+						new sap.m.Label({text: "Description"}),
+						new sap.m.Input({value: "{Description}"}),
+					]
+				});			
+	
+				
+				var oApp = new sap.m.App({
+					pages: [
+						new sap.m.Page("categoryPage", {
+							title: "Northwind Image Display",
+							content: [
+					            new sap.m.Panel({
+									content: [oForm]				   
+									})
+							]
+						})  
+					]
+				});
+				
+				sap.ui.getCore().byId("categoryPage").bindElement("/Categories(1)");			
+				oApp.placeAt("content"); 			
+			});
+	
+		</script>
+
+	</head>
+	<body class="sapUiBody" role="application">
+		<div id="content"></div>
+	</body>
+</html>
