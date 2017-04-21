@@ -1,0 +1,185 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+
+		<script src="../../resources/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.m"
+				data-sap-ui-theme="sap_bluecrystal">
+		</script>
+
+		<script>
+			
+			// Application data
+			var sServiceUrl = "https://cors-anywhere.herokuapp.com/" +
+			                  "http://services.odata.org/V2/(S(vitw3mhyp5ifhga2mttx5okl))/OData/OData.svc/";
+	        
+	        var oModel = new sap.ui.model.odata.v2.ODataModel({
+	        	serviceUrl: sServiceUrl
+	        });
+	        
+	        sap.ui.getCore().setModel(oModel);
+	        
+	        // read a supplier that exists
+	        function readSupplier(){
+	        	oModel.read("/Suppliers(0)", {
+	        		success: function(oData, oResponse){
+	        			console.log("Response", oResponse);
+		        		console.log("Data", oData);
+	        		},
+	        		error: function(oError){
+	        			console.log("Error:", oError);
+	        		}
+	        	});
+	        }
+	        
+	        // read a supplier not exists
+	    	function readSupplierNotExists(){
+	        	oModel.read("/Suppliers(1222))", {
+	        		success: function(oData, oResponse){
+	        			console.log("Response", oResponse);
+		        		console.log("Data", oData);
+	        		},
+	        		error: function(oError){
+	        			console.log("Error:", oError);
+	        		}
+	        	});
+	        }
+	        
+	        // get model property using two methods
+	    	// however oModel.getData() method is depreciated
+	        function getData(){
+	        	function fnSuccess(oData, oResponse){
+	        		var oSupplier = oModel.getData("/Suppliers(0)");
+	        		console.log(oSupplier);
+
+					// supplier name
+					console.log(oSupplier.Name);
+					console.log(oModel.getProperty("/Suppliers(0)/Name"));
+		        }
+		        
+		        function fnError(oError){
+		        	console.log("Error", oError);
+		        }		        
+
+	        	oModel.read("/Suppliers", {
+	        		success: fnSuccess,
+	        		error: fnError
+	        	});        	
+	        }
+	        
+	        // create new supplier
+	        function createSupplier(){
+	        	var oNewData = {
+			    	    "ID": 103,
+			    	    "Name": "Stone测试供应商 #103",
+			    	    "Address": {
+			    	      "Street": "三角湖路",
+			    	      "City": "武汉",
+			    	      "State": "HB",
+			    	      "ZipCode": "430060",
+			    	      "Country": "中国"
+			    	    }
+			    	};
+		        
+		        oModel.create("/Suppliers", oNewData, {
+		        	success: function(oData, oResponse){
+		        		console.log(oResponse);
+		        	}, 
+		        	error: function(oError){
+		        		console.log(oError);
+		        	}
+		        });		        
+	        }	
+	        
+	        // delete supplier
+	        function editSupplier(){
+			    var oModel = new sap.ui.model.odata.v2.ODataModel({
+			        serviceUrl: sServiceUrl,
+			        headers: {
+			            "If-match": "*"
+			        }});
+			
+			    var oChanges = {                        
+			            "Name": "Stone测试供应商#101",
+			            "Address": {
+			                "Street": "博学路",
+			                "City": "武汉",
+			                "State": "HB",
+			                "ZipCode": "430060",
+			                "Country": "China"
+			            }
+			        };
+			        
+			    oModel.update("/Suppliers(103)", oChanges, {
+			        success: function(oData, oResponse){
+			            console.log("Response", oResponse);
+			        },
+			        error: function(oError){
+			            console.log("Error", oError);
+			        }
+			    });
+			}
+	        
+	        // remove supplier
+	        function removeSupplier(){
+		        
+		        function fnSuccess(oData, oResponse){
+		        	console.log(oResponse);
+		        }
+		        
+		        function fnError(oError){
+		        	console.log(oError);
+		        }
+		        
+		        oModel.remove("/Suppliers(103)", {success: fnSuccess, error: fnError});		        
+	        }
+	        
+	        var oReadButton = new sap.m.Button({
+	        	text: "Read first supplier",
+	        	press: readSupplier
+	        });
+	        
+	        var oReadButton2 = new sap.m.Button({
+	        	text: "Read supplier not exists",
+	        	press: readSupplierNotExists
+	        });
+	        
+	        var oGetDataButton = new sap.m.Button({
+	        	text: "Read data property",
+	        	press: getData
+	        });
+	        
+	        var oCreateButton = new sap.m.Button({
+	        	text: "Create Supplier",
+	        	press: createSupplier
+	        });
+	        
+	        var oEditButton = new sap.m.Button({
+	        	text: "Edit Supplier",
+	        	press: editSupplier
+	        });
+	        
+	        var oDeleteButton = new sap.m.Button({
+	        	text: "Delete Supplier",
+	        	press: removeSupplier
+	        });
+        	
+        	var oPage = new sap.m.Page({
+        		title: "CRUD using OData v2 Model",
+        		content: [oReadButton, oReadButton2, oGetDataButton, oCreateButton, oEditButton, oDeleteButton]
+        	});
+        	
+        	var oApp = new sap.m.App({
+        		pages: [oPage]
+        	}).placeAt("content");
+
+		</script>
+
+	</head>
+	<body class="sapUiBody" role="application">
+		<div id="content"></div>
+	</body>
+</html>
