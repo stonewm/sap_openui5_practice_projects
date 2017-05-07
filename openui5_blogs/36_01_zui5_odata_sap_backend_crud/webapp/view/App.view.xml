@@ -1,0 +1,16 @@
+<mvc:View controllerName="zui5_odata_sap_backend.controller.App" 
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m">
+	<App>
+		<pages>
+			<Page title="Connect to SAP Backend System using OData Model" >
+				<content>
+					<Button text="Create Employee" press="onCreateEmp" />
+					<Button text="Update employee" press="onUpdateEmp" />
+					<Button text="Delete employee" press="onDeleteEmp" />
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
