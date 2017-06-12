@@ -1,0 +1,48 @@
+<mvc:View controllerName="zui5_odata_http_request.controller.App" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m">
+	<App>
+		<pages>
+			<Page title="{i18n>title}">
+				<content>
+					<Table noDataText="No data" id="idTable" items="{path:'/EmployeeCollection'}">
+						<items>
+							<ColumnListItem type="Navigation" press="onItemPress">
+								<cells>
+									<Text text="{EmpId}"/>
+									<Text text="{EmpName}"/>
+									<Text text="{EmpAddr}"/>
+								</cells>
+							</ColumnListItem>
+						</items>
+						<columns>
+							<Column id="EmpIdCol">
+								<header>
+									<Label text="Employee ID"/>
+								</header>
+							</Column>
+							<Column id="EmpNameCol">
+								<header>
+									<Label text="Name"/>
+								</header>
+							</Column>
+							<Column id="EmpAddrCol">
+								<header>
+									<Label text="Address"/>
+								</header>
+							</Column>
+						</columns>
+					</Table>
+				</content>
+				<footer>
+					<Bar>
+						<contentRight>
+							<Button icon="sap-icon://create" text="Create" press="onCreate"/>
+							<Button icon="sap-icon://edit" text="Edit" press="onEdit"/>
+							<Button icon="sap-icon://delete" text="Delete" press="onDelete"/>
+						</contentRight>
+					</Bar>
+				</footer>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
